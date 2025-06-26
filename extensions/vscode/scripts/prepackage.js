@@ -90,8 +90,42 @@ void (async () => {
   execCmdSync("npm install");
   console.log("[info] npm install in gui completed");
 
-  if (isInGitHubAction) {
+  // Ensure @continuedev/core dependencies are present for type checking & bundling
+  process.chdir("../core");
+  execCmdSync("npm install");
+  console.log("[info] npm install in core completed");
+
+  // Switch back to gui for the build step
+  process.chdir("../gui");
+
+  // Build local OpenAI adapters package so core can import it
+  process.chdir("../packages/openai-adapters");
+  execCmdSync("npm install");
+  execCmdSync("npm run build");
+  console.log("[info] built openai-adapters package");
+
+  // Return to gui directory for build (two levels up from packages/openai-adapters)
+  process.chdir("../../gui");
+
+  // Always ensure the GUI is built. On CI we build unconditionally, and
+  // locally we also build unless a previous build already produced the
+  // expected artifacts. This prevents packaging from failing with
+  // "gui build did not produce index.js" when the user hasn't manually
+  // built the GUI beforehand.
+  const expectedGuiJs = path.join("dist", "assets", "index.js");
+  const expectedGuiCss = path.join("dist", "assets", "index.css");
+
+  const shouldBuildGui =
+    isInGitHubAction ||
+    !fs.existsSync(expectedGuiJs) ||
+    !fs.existsSync(expectedGuiCss);
+
+  if (shouldBuildGui) {
+    console.log("[info] Building gui webview");
     execCmdSync("npm run build");
+    console.log("[info] gui build finished");
+  } else {
+    console.log("[info] Reusing existing gui build");
   }
 
   // Copy over the dist folder to the JetBrains extension //
