@@ -1,7 +1,7 @@
 {
-  "name": "continue",
+  "name": "homi",
   "icon": "media/icon.png",
-  "author": "Continue Dev, Inc",
+  "author": "Homi Dev, Inc",
   "version": "1.1.52",
   "repository": {
     "type": "git",
@@ -18,10 +18,10 @@
   "homepage": "https://continue.dev",
   "qna": "https://github.com/continuedev/continue/issues/new/choose",
   "license": "Apache-2.0",
-  "displayName": "Continue - open-source AI code assistant",
+  "displayName": "Homi - AI code assistant",
   "pricing": "Free",
-  "description": "The leading open-source AI code assistant",
-  "publisher": "Continue",
+  "description": "Homi AI code assistant based on Continue",
+  "publisher": "Homi",
   "engines": {
     "vscode": "^1.70.0",
     "node": ">=20.19.0"
@@ -53,7 +53,8 @@
   "activationEvents": [
     "onUri",
     "onStartupFinished",
-    "onView:continueGUIView"
+    "onView:homiGUIView",
+    "onView:homiGUIViewRight"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -84,62 +85,68 @@
       }
     ],
     "configuration": {
-      "title": "Continue",
+      "title": "Homi",
       "properties": {
-        "continue.telemetryEnabled": {
+        "homi.telemetryEnabled": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Continue collects anonymous usage data, cleaned of PII, to help us improve the product for our users. Read more  at [continue.dev › Telemetry](https://docs.continue.dev/telemetry)."
+          "markdownDescription": "Homi collects anonymous usage data, cleaned of PII, to help us improve the product for our users."
         },
-        "continue.showInlineTip": {
+        "homi.showInlineTip": {
           "type": "boolean",
           "default": true,
-          "description": "Show inline suggestion to use the Continue keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."
+          "description": "Show inline suggestion to use the Homi keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."
         },
-        "continue.disableQuickFix": {
+        "homi.disableQuickFix": {
           "type": "boolean",
           "default": false,
           "description": "Disable the quick fix feature."
         },
-        "continue.enableQuickActions": {
+        "homi.enableQuickActions": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Enable the experimental Quick Actions feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Quick Actions (experimental)](https://docs.continue.dev/customize/deep-dives/vscode-actions#quick-actions)"
+          "markdownDescription": "Enable the experimental Quick Actions feature."
         },
-        "continue.enableTabAutocomplete": {
+        "homi.enableTabAutocomplete": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "Enable Continue's tab autocomplete feature. Read our walkthrough to learn about configuration and how to share feedback: [continue.dev › Walkthrough: Tab Autocomplete (beta)](https://docs.continue.dev/features/tab-autocomplete)"
+          "markdownDescription": "Enable Homi's tab autocomplete feature."
         },
-        "continue.pauseTabAutocompleteOnBattery": {
+        "homi.pauseTabAutocompleteOnBattery": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Pause Continue's tab autocomplete feature when your battery is low."
+          "markdownDescription": "Pause Homi's tab autocomplete feature when your battery is low."
         },
-        "continue.pauseCodebaseIndexOnStart": {
+        "homi.pauseCodebaseIndexOnStart": {
           "type": "boolean",
           "default": false,
-          "markdownDescription": "Pause Continue's codebase index on start."
+          "markdownDescription": "Pause Homi's codebase index on start."
         },
-        "continue.enableConsole": {
+        "homi.enableConsole": {
           "type": "boolean",
           "default": false,
           "markdownDescription": "Enable a console to log and explore model inputs and outputs. It can be found in the bottom panel."
         },
-        "continue.remoteConfigServerUrl": {
+        "homi.remoteConfigServerUrl": {
           "type": "string",
           "default": null,
           "markdownDescription": "If your team is set up to use shared configuration, enter the server URL here and your user token below to enable automatic syncing."
         },
-        "continue.userToken": {
+        "homi.userToken": {
           "type": "string",
           "default": null,
           "markdownDescription": "If your team is set up to use shared configuration, enter your user token here and your server URL above to enable automatic syncing."
         },
-        "continue.remoteConfigSyncPeriod": {
+        "homi.remoteConfigSyncPeriod": {
           "type": "number",
           "default": 60,
           "description": "The period of time in minutes between automatic syncs."
+        },
+        "homi.sidebarPosition": {
+          "type": "string",
+          "enum": ["left", "right"],
+          "default": "right",
+          "description": "Position of the Homi sidebar. Set to 'left' to move Homi to the default left sidebar."
         }
       }
     },
@@ -515,22 +522,22 @@
         {
           "command": "continue.newSession",
           "group": "navigation@1",
-          "when": "view == continue.continueGUIView"
+          "when": "view == continue.continueGUIView || view == continue.continueGUIViewRight"
         },
         {
           "command": "continue.viewHistory",
           "group": "navigation@2",
-          "when": "view == continue.continueGUIView"
+          "when": "view == continue.continueGUIView || view == continue.continueGUIViewRight"
         },
         {
           "command": "continue.toggleFullScreen",
           "group": "navigation@3",
-          "when": "view == continue.continueGUIView"
+          "when": "view == continue.continueGUIView || view == continue.continueGUIViewRight"
         },
         {
           "command": "continue.openConfigPage",
           "group": "navigation@4",
-          "when": "view == continue.continueGUIView"
+          "when": "view == continue.continueGUIView || view == continue.continueGUIViewRight"
         },
         {
           "command": "continue.clearConsole",
@@ -542,12 +549,12 @@
         {
           "command": "continue.newSession",
           "group": "navigation@1",
-          "when": "activeWebviewPanelId == continue.continueGUIView"
+          "when": "activeWebviewPanelId == continue.continueGUIView || activeWebviewPanelId == continue.continueGUIViewRight"
         },
         {
           "command": "continue.viewHistory",
           "group": "navigation@2",
-          "when": "activeWebviewPanelId == continue.continueGUIView"
+          "when": "activeWebviewPanelId == continue.continueGUIView || activeWebviewPanelId == continue.continueGUIViewRight"
         }
       ],
       "terminal/context": [
@@ -560,37 +567,53 @@
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "continue",
-          "title": "Continue",
+          "id": "homiRight",
+          "title": "Homi",
+          "icon": "media/sidebar-icon.png"
+        },
+        {
+          "id": "homi",
+          "title": "Homi",
           "icon": "media/sidebar-icon.png"
         }
       ],
       "panel": [
         {
-          "id": "continueConsole",
-          "title": "Continue Console",
+          "id": "homiConsole",
+          "title": "Homi Console",
           "icon": "$(window)"
         }
       ]
     },
     "views": {
-      "continue": [
+      "homi": [
         {
           "type": "webview",
-          "id": "continue.continueGUIView",
-          "name": "Continue",
+          "id": "homi.homiGUIView",
+          "name": "Homi",
           "icon": "media/sidebar-icon.png",
-          "visibility": "visible"
+          "visibility": "collapsed",
+          "when": "homi.sidebarPositionLeft"
         }
       ],
-      "continueConsole": [
+      "homiRight": [
         {
           "type": "webview",
-          "id": "continue.continueConsoleView",
-          "name": "Continue Console",
+          "id": "homi.homiGUIViewRight",
+          "name": "Homi",
+          "icon": "media/sidebar-icon.png",
+          "visibility": "visible",
+          "when": "homi.sidebarPositionRight"
+        }
+      ],
+      "homiConsole": [
+        {
+          "type": "webview",
+          "id": "homi.homiConsoleView",
+          "name": "Homi Console",
           "icon": "$(window)",
           "visibility": "visible",
-          "when": "config.continue.enableConsole"
+          "when": "config.homi.enableConsole"
         }
       ]
     },

@@ -7,22 +7,22 @@ import { Core } from "core/core";
 import { FromCoreProtocol, ToCoreProtocol } from "core/protocol";
 import { InProcessMessenger } from "core/protocol/messenger";
 import {
-  getConfigJsonPath,
-  getConfigTsPath,
-  getConfigYamlPath,
+    getConfigJsonPath,
+    getConfigTsPath,
+    getConfigYamlPath,
 } from "core/util/paths";
 import { v4 as uuidv4 } from "uuid";
 import * as vscode from "vscode";
 
 import { ContinueCompletionProvider } from "../autocomplete/completionProvider";
 import {
-  monitorBatteryChanges,
-  setupStatusBar,
-  StatusBarStatus,
+    monitorBatteryChanges,
+    setupStatusBar,
+    StatusBarStatus,
 } from "../autocomplete/statusBar";
 import { registerAllCommands } from "../commands";
 import { ContinueConsoleWebviewViewProvider } from "../ContinueConsoleWebviewViewProvider";
-import { ContinueGUIWebviewViewProvider } from "../ContinueGUIWebviewViewProvider";
+import { HomiGUIWebviewViewProvider } from "../ContinueGUIWebviewViewProvider";
 import { VerticalDiffManager } from "../diff/vertical/manager";
 import { registerAllCodeLensProviders } from "../lang-server/codeLens";
 import { registerAllPromptFilesCompletionProviders } from "../lang-server/promptFileCompletions";
@@ -31,8 +31,8 @@ import { QuickEdit } from "../quickEdit/QuickEditQuickPick";
 import { setupRemoteConfigSync } from "../stubs/activation";
 import { UriEventHandler } from "../stubs/uriHandler";
 import {
-  getControlPlaneSessionInfo,
-  WorkOsAuthProvider,
+    getControlPlaneSessionInfo,
+    WorkOsAuthProvider,
 } from "../stubs/WorkOsAuthProvider";
 import { Battery } from "../util/battery";
 import { FileSearch } from "../util/FileSearch";
@@ -41,6 +41,7 @@ import { VsCodeIde } from "../VsCodeIde";
 import { ConfigYamlDocumentLinkProvider } from "./ConfigYamlDocumentLinkProvider";
 import { VsCodeMessenger } from "./VsCodeMessenger";
 
+import { DelegatingWebviewProtocol } from "../DelegatingWebviewProtocol";
 import { VsCodeIdeUtils } from "../util/ideUtils";
 import type { VsCodeWebviewProtocol } from "../webviewProtocol";
 
@@ -52,11 +53,13 @@ export class VsCodeExtension {
   private ide: VsCodeIde;
   private ideUtils: VsCodeIdeUtils;
   private consoleView: ContinueConsoleWebviewViewProvider;
-  private sidebar: ContinueGUIWebviewViewProvider;
+  private sidebar: HomiGUIWebviewViewProvider;
+  private sidebarRight: HomiGUIWebviewViewProvider | undefined;
   private windowId: string;
   private editDecorationManager: EditDecorationManager;
   private verticalDiffManager: VerticalDiffManager;
   webviewProtocolPromise: Promise<VsCodeWebviewProtocol>;
+  private delegatingProtocol: DelegatingWebviewProtocol;
   private core: Core;
   private battery: Battery;
   private workOsAuthProvider: WorkOsAuthProvider;
@@ -64,6 +67,9 @@ export class VsCodeExtension {
   private uriHandler = new UriEventHandler();
 
   constructor(context: vscode.ExtensionContext) {
+    // Initialize sidebar visibility first
+    VsCodeExtension.updateSidebarVisibilityStatic();
+
     // Register auth provider
     this.workOsAuthProvider = new WorkOsAuthProvider(context, this.uriHandler);
     this.workOsAuthProvider.refreshSessions();
@@ -93,23 +99,65 @@ export class VsCodeExtension {
     const configHandlerPromise = new Promise<ConfigHandler>((resolve) => {
       resolveConfigHandler = resolve;
     });
-    this.sidebar = new ContinueGUIWebviewViewProvider(
+    this.sidebar = new HomiGUIWebviewViewProvider(
       configHandlerPromise,
       this.windowId,
       this.extensionContext,
     );
 
-    // Sidebar
+    // Initialize right sidebar 
+    this.sidebarRight = new HomiGUIWebviewViewProvider(
+      configHandlerPromise,
+      this.windowId,
+      this.extensionContext,
+    );
+
+    // Create delegating protocol
+    this.delegatingProtocol = new DelegatingWebviewProtocol(
+      this.sidebar,
+      this.sidebarRight,
+      async () => {
+        const configHandler = await configHandlerPromise;
+        return configHandler.reloadConfig();
+      },
+    );
+
+    // Register both sidebar views
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "continue.continueGUIView",
+        "homi.homiGUIView",
         this.sidebar,
         {
           webviewOptions: { retainContextWhenHidden: true },
         },
       ),
     );
-    resolveWebviewProtocol(this.sidebar.webviewProtocol);
+
+    context.subscriptions.push(
+      vscode.window.registerWebviewViewProvider(
+        "homi.homiGUIViewRight", 
+        this.sidebarRight,
+        {
+          webviewOptions: { retainContextWhenHidden: true },
+        },
+      ),
+    );
+
+    // Set webview protocol based on sidebar position
+    this.updateWebviewProtocol();
+    
+    // Listen for configuration changes
+    vscode.workspace.onDidChangeConfiguration((e) => {
+      if (e.affectsConfiguration("homi.sidebarPosition")) {
+        this.updateWebviewProtocol();
+        this.updateSidebarVisibility();
+      }
+    });
+
+    // Initialize sidebar visibility
+    this.updateSidebarVisibility();
+
+    resolveWebviewProtocol(this.delegatingProtocol);
 
     const inProcessMessenger = new InProcessMessenger<
       ToCoreProtocol,
@@ -118,7 +166,7 @@ export class VsCodeExtension {
 
     new VsCodeMessenger(
       inProcessMessenger,
-      this.sidebar.webviewProtocol,
+      this.delegatingProtocol,
       this.ide,
       verticalDiffManagerPromise,
       configHandlerPromise,
@@ -133,7 +181,7 @@ export class VsCodeExtension {
     this.configHandler.loadConfig();
 
     this.verticalDiffManager = new VerticalDiffManager(
-      this.sidebar.webviewProtocol,
+      this.delegatingProtocol,
       this.editDecorationManager,
     );
     resolveVerticalDiffManager?.(this.verticalDiffManager);
@@ -184,7 +232,7 @@ export class VsCodeExtension {
         new ContinueCompletionProvider(
           this.configHandler,
           this.ide,
-          this.sidebar.webviewProtocol,
+          this.delegatingProtocol,
         ),
       ),
     );
@@ -218,7 +266,7 @@ export class VsCodeExtension {
     const quickEdit = new QuickEdit(
       this.verticalDiffManager,
       this.configHandler,
-      this.sidebar.webviewProtocol,
+      this.delegatingProtocol,
       this.ide,
       context,
       this.fileSearch,
@@ -233,7 +281,7 @@ export class VsCodeExtension {
 
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "continue.continueConsoleView",
+        "homi.homiConsoleView",
         this.consoleView,
       ),
     );
@@ -243,7 +291,7 @@ export class VsCodeExtension {
       context,
       this.ide,
       context,
-      this.sidebar,
+      this.getActiveSidebar(),
       this.consoleView,
       this.configHandler,
       this.verticalDiffManager,
@@ -254,7 +302,7 @@ export class VsCodeExtension {
     );
 
     // Disabled due to performance issues
-    // registerDebugTracker(this.sidebar.webviewProtocol, this.ide);
+    // registerDebugTracker(this.delegatingProtocol, this.ide);
 
     // Listen for file saving - use global file watcher so that changes
     // from outside the window are also caught
@@ -409,5 +457,58 @@ export class VsCodeExtension {
 
   registerCustomContextProvider(contextProvider: IContextProvider) {
     this.configHandler.registerCustomContextProvider(contextProvider);
+  }
+
+  private static updateSidebarVisibilityStatic(): void {
+    const config = vscode.workspace.getConfiguration("homi");
+    const sidebarPosition = config.get<string>("sidebarPosition", "right");
+    
+    // Set context variables that control view visibility
+    vscode.commands.executeCommand("setContext", "homi.sidebarPositionLeft", sidebarPosition === "left");
+    vscode.commands.executeCommand("setContext", "homi.sidebarPositionRight", sidebarPosition === "right");
+  }
+
+  private updateWebviewProtocol(): void {
+    // The delegating protocol will automatically route to the correct sidebar
+    // based on the configuration, so no additional action is needed here.
+    // This method is kept for future extensibility.
+  }
+
+  private updateSidebarVisibility(): void {
+    const config = vscode.workspace.getConfiguration("homi");
+    const sidebarPosition = config.get<string>("sidebarPosition", "right");
+    
+    // Set context variables that control view visibility
+    vscode.commands.executeCommand("setContext", "homi.sidebarPositionLeft", sidebarPosition === "left");
+    vscode.commands.executeCommand("setContext", "homi.sidebarPositionRight", sidebarPosition === "right");
+    
+    // Also try to focus the correct sidebar
+    if (sidebarPosition === "right") {
+      // Show right sidebar container
+      vscode.commands.executeCommand("workbench.view.extension.homiRight");
+    } else {
+      // Show left sidebar container
+      vscode.commands.executeCommand("workbench.view.extension.homi");
+    }
+  }
+
+  private getActiveWebviewProtocol(): VsCodeWebviewProtocol {
+    const config = vscode.workspace.getConfiguration("homi");
+    const sidebarPosition = config.get<string>("sidebarPosition", "right");
+    
+    if (sidebarPosition === "right" && this.sidebarRight) {
+      return this.sidebarRight.webviewProtocol;
+    }
+    return this.sidebar.webviewProtocol;
+  }
+
+  private getActiveSidebar(): HomiGUIWebviewViewProvider {
+    const config = vscode.workspace.getConfiguration("homi");
+    const sidebarPosition = config.get<string>("sidebarPosition", "right");
+    
+    if (sidebarPosition === "right" && this.sidebarRight) {
+      return this.sidebarRight;
+    }
+    return this.sidebar;
   }
 }

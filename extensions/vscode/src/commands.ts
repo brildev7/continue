@@ -69,8 +69,15 @@ function focusGUI() {
     // focus fullscreen
     fullScreenPanel?.reveal();
   } else {
-    // focus sidebar
-    vscode.commands.executeCommand("continue.continueGUIView.focus");
+    // focus sidebar based on current position
+    const config = vscode.workspace.getConfiguration("homi");
+    const sidebarPosition = config.get<string>("sidebarPosition", "right");
+    
+    if (sidebarPosition === "right") {
+      vscode.commands.executeCommand("homi.homiGUIViewRight.focus");
+    } else {
+      vscode.commands.executeCommand("homi.homiGUIView.focus");
+    }
     // vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
   }
 }
@@ -220,7 +227,7 @@ const getCommandsMap: (
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      focusGUI();
     },
     // Passthrough for telemetry purposes
     "continue.defaultQuickAction": async (args: QuickEditShowParams) => {
@@ -235,7 +242,7 @@ const getCommandsMap: (
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      focusGUI();
     },
     "continue.customQuickActionStreamInlineEdit": async (
       prompt: string,
@@ -392,7 +399,7 @@ const getCommandsMap: (
 
       const terminalContents = await ide.getTerminalContents();
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      focusGUI();
 
       sidebar.webviewProtocol?.request("userInput", {
         input: `I got the following error, can you please help explain how to fix it?\n\n${terminalContents.trim()}`,
@@ -408,7 +415,7 @@ const getCommandsMap: (
     "continue.addModel": () => {
       captureCommandTelemetry("addModel");
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      focusGUI();
       sidebar.webviewProtocol?.request("addModel", undefined);
     },
     "continue.newSession": () => {
@@ -511,7 +518,7 @@ const getCommandsMap: (
         throw new Error("No files were selected");
       }
 
-      vscode.commands.executeCommand("continue.continueGUIView.focus");
+      focusGUI();
 
       for (const uri of uris) {
         // If it's a folder, add the entire folder contents recursively by using walkDir (to ignore ignored files)
