@@ -27,7 +27,7 @@ import {
   StatusBarStatus,
 } from "./autocomplete/statusBar";
 import { ContinueConsoleWebviewViewProvider } from "./ContinueConsoleWebviewViewProvider";
-import { ContinueGUIWebviewViewProvider } from "./ContinueGUIWebviewViewProvider";
+import { HomiGUIWebviewViewProvider } from "./ContinueGUIWebviewViewProvider";
 import { processDiff } from "./diff/processDiff";
 import { VerticalDiffManager } from "./diff/vertical/manager";
 import EditDecorationManager from "./quickEdit/EditDecorationManager";
@@ -47,7 +47,7 @@ let fullScreenPanel: vscode.WebviewPanel | undefined;
 function getFullScreenTab() {
   const tabs = vscode.window.tabGroups.all.flatMap((tabGroup) => tabGroup.tabs);
   return tabs.find((tab) =>
-    (tab.input as any)?.viewType?.endsWith("continue.continueGUIView"),
+    (tab.input as any)?.viewType?.endsWith("homi.homiGUIView"),
   );
 }
 
@@ -95,7 +95,7 @@ function hideGUI() {
 }
 
 function waitForSidebarReady(
-  sidebar: ContinueGUIWebviewViewProvider,
+  sidebar: HomiGUIWebviewViewProvider,
   timeout: number,
   interval: number,
 ): Promise<boolean> {
@@ -120,7 +120,7 @@ function waitForSidebarReady(
 const getCommandsMap: (
   ide: VsCodeIde,
   extensionContext: vscode.ExtensionContext,
-  sidebar: ContinueGUIWebviewViewProvider,
+  sidebar: HomiGUIWebviewViewProvider,
   consoleView: ContinueConsoleWebviewViewProvider,
   configHandler: ConfigHandler,
   verticalDiffManager: VerticalDiffManager,
@@ -184,7 +184,7 @@ const getCommandsMap: (
   }
 
   return {
-    "continue.acceptDiff": async (newFileUri?: string, streamId?: string) => {
+    "homi.acceptDiff": async (newFileUri?: string, streamId?: string) => {
       captureCommandTelemetry("acceptDiff");
       void processDiff(
         "accept",
@@ -197,7 +197,7 @@ const getCommandsMap: (
       );
     },
 
-    "continue.rejectDiff": async (newFileUri?: string, streamId?: string) => {
+    "homi.rejectDiff": async (newFileUri?: string, streamId?: string) => {
       captureCommandTelemetry("rejectDiff");
       void processDiff(
         "reject",
@@ -209,15 +209,15 @@ const getCommandsMap: (
         streamId,
       );
     },
-    "continue.acceptVerticalDiffBlock": (fileUri?: string, index?: number) => {
+    "homi.acceptVerticalDiffBlock": (fileUri?: string, index?: number) => {
       captureCommandTelemetry("acceptVerticalDiffBlock");
       verticalDiffManager.acceptRejectVerticalDiffBlock(true, fileUri, index);
     },
-    "continue.rejectVerticalDiffBlock": (fileUri?: string, index?: number) => {
+    "homi.rejectVerticalDiffBlock": (fileUri?: string, index?: number) => {
       captureCommandTelemetry("rejectVerticalDiffBlock");
       verticalDiffManager.acceptRejectVerticalDiffBlock(false, fileUri, index);
     },
-    "continue.quickFix": async (
+    "homi.quickFix": async (
       range: vscode.Range,
       diagnosticMessage: string,
     ) => {
@@ -230,11 +230,11 @@ const getCommandsMap: (
       focusGUI();
     },
     // Passthrough for telemetry purposes
-    "continue.defaultQuickAction": async (args: QuickEditShowParams) => {
+    "homi.defaultQuickAction": async (args: QuickEditShowParams) => {
       captureCommandTelemetry("defaultQuickAction");
-      vscode.commands.executeCommand("continue.focusEdit", args);
+      vscode.commands.executeCommand("homi.focusEdit", args);
     },
-    "continue.customQuickActionSendToChat": async (
+    "homi.customQuickActionSendToChat": async (
       prompt: string,
       range: vscode.Range,
     ) => {
@@ -244,7 +244,7 @@ const getCommandsMap: (
 
       focusGUI();
     },
-    "continue.customQuickActionStreamInlineEdit": async (
+    "homi.customQuickActionStreamInlineEdit": async (
       prompt: string,
       range: vscode.Range,
     ) => {
@@ -252,19 +252,19 @@ const getCommandsMap: (
 
       streamInlineEdit("docstring", prompt, false, range);
     },
-    "continue.codebaseForceReIndex": async () => {
+    "homi.codebaseForceReIndex": async () => {
       core.invoke("index/forceReIndex", undefined);
     },
-    "continue.rebuildCodebaseIndex": async () => {
+    "homi.rebuildCodebaseIndex": async () => {
       core.invoke("index/forceReIndex", { shouldClearIndexes: true });
     },
-    "continue.docsIndex": async () => {
+    "homi.docsIndex": async () => {
       core.invoke("context/indexDocs", { reIndex: false });
     },
-    "continue.docsReIndex": async () => {
+    "homi.docsReIndex": async () => {
       core.invoke("context/indexDocs", { reIndex: true });
     },
-    "continue.focusContinueInput": async () => {
+    "homi.focusHomiInput": async () => {
       const isContinueInputFocused = await sidebar.webviewProtocol.request(
         "isContinueInputFocused",
         undefined,
@@ -308,7 +308,7 @@ const getCommandsMap: (
         void addHighlightedCodeToContext(sidebar.webviewProtocol);
       }
     },
-    "continue.focusContinueInputWithoutClear": async () => {
+    "homi.focusHomiInputWithoutClear": async () => {
       const isContinueInputFocused = await sidebar.webviewProtocol.request(
         "isContinueInputFocused",
         undefined,
@@ -341,17 +341,17 @@ const getCommandsMap: (
     },
     // QuickEditShowParams are passed from CodeLens, temp fix
     // until we update to new params specific to Edit
-    "continue.focusEdit": async (args?: QuickEditShowParams) => {
+    "homi.focusEdit": async (args?: QuickEditShowParams) => {
       captureCommandTelemetry("focusEdit");
       focusGUI();
       sidebar.webviewProtocol?.request("focusEdit", undefined);
     },
-    "continue.exitEditMode": async () => {
+    "homi.exitEditMode": async () => {
       captureCommandTelemetry("exitEditMode");
       editDecorationManager.clear();
       void sidebar.webviewProtocol?.request("exitEditMode", undefined);
     },
-    "continue.writeCommentsForCode": async () => {
+    "homi.writeCommentsForCode": async () => {
       captureCommandTelemetry("writeCommentsForCode");
 
       streamInlineEdit(
@@ -359,7 +359,7 @@ const getCommandsMap: (
         "Write comments for this code. Do not change anything about the code itself.",
       );
     },
-    "continue.writeDocstringForCode": async () => {
+    "homi.writeDocstringForCode": async () => {
       captureCommandTelemetry("writeDocstringForCode");
 
       streamInlineEdit(
@@ -368,7 +368,7 @@ const getCommandsMap: (
         true,
       );
     },
-    "continue.fixCode": async () => {
+    "homi.fixCode": async () => {
       captureCommandTelemetry("fixCode");
 
       streamInlineEdit(
@@ -376,25 +376,25 @@ const getCommandsMap: (
         "Fix this code. If it is already 100% correct, simply rewrite the code.",
       );
     },
-    "continue.optimizeCode": async () => {
+    "homi.optimizeCode": async () => {
       captureCommandTelemetry("optimizeCode");
       streamInlineEdit("optimize", "Optimize this code");
     },
-    "continue.fixGrammar": async () => {
+    "homi.fixGrammar": async () => {
       captureCommandTelemetry("fixGrammar");
       streamInlineEdit(
         "fixGrammar",
         "If there are any grammar or spelling mistakes in this writing, fix them. Do not make other large changes to the writing.",
       );
     },
-    "continue.clearConsole": async () => {
+    "homi.clearConsole": async () => {
       consoleView.clearLog();
     },
-    "continue.viewLogs": async () => {
+    "homi.viewLogs": async () => {
       captureCommandTelemetry("viewLogs");
       vscode.commands.executeCommand("workbench.action.toggleDevTools");
     },
-    "continue.debugTerminal": async () => {
+    "homi.debugTerminal": async () => {
       captureCommandTelemetry("debugTerminal");
 
       const terminalContents = await ide.getTerminalContents();
@@ -405,26 +405,26 @@ const getCommandsMap: (
         input: `I got the following error, can you please help explain how to fix it?\n\n${terminalContents.trim()}`,
       });
     },
-    "continue.hideInlineTip": () => {
+    "homi.hideInlineTip": () => {
       vscode.workspace
         .getConfiguration(EXTENSION_NAME)
         .update("showInlineTip", false, vscode.ConfigurationTarget.Global);
     },
 
     // Commands without keyboard shortcuts
-    "continue.addModel": () => {
+    "homi.addModel": () => {
       captureCommandTelemetry("addModel");
 
       focusGUI();
       sidebar.webviewProtocol?.request("addModel", undefined);
     },
-    "continue.newSession": () => {
+    "homi.newSession": () => {
       sidebar.webviewProtocol?.request("newSession", undefined);
     },
-    "continue.viewHistory": () => {
-      vscode.commands.executeCommand("continue.navigateTo", "/history", true);
+    "homi.viewHistory": () => {
+      vscode.commands.executeCommand("homi.navigateTo", "/history", true);
     },
-    "continue.focusContinueSessionId": async (
+    "homi.focusHomiSessionId": async (
       sessionId: string | undefined,
     ) => {
       if (!sessionId) {
@@ -436,10 +436,10 @@ const getCommandsMap: (
         sessionId,
       });
     },
-    "continue.applyCodeFromChat": () => {
+    "homi.applyCodeFromChat": () => {
       void sidebar.webviewProtocol.request("applyCodeFromChat", undefined);
     },
-    "continue.toggleFullScreen": async () => {
+    "homi.toggleFullScreen": async () => {
       focusGUI();
 
       const sessionId = await sidebar.webviewProtocol.request(
@@ -456,15 +456,15 @@ const getCommandsMap: (
       }
 
       // Clear the sidebar to prevent overwriting changes made in fullscreen
-      vscode.commands.executeCommand("continue.newSession");
+      vscode.commands.executeCommand("homi.newSession");
 
       // Full screen not open - open it
       captureCommandTelemetry("openFullScreen");
 
       // Create the full screen panel
       let panel = vscode.window.createWebviewPanel(
-        "continue.continueGUIView",
-        "Continue",
+        "homi.homiGUIView",
+        "Homi",
         vscode.ViewColumn.One,
         {
           retainContextWhenHidden: true,
@@ -483,10 +483,10 @@ const getCommandsMap: (
       );
 
       const sessionLoader = panel.onDidChangeViewState(() => {
-        vscode.commands.executeCommand("continue.newSession");
+        vscode.commands.executeCommand("homi.newSession");
         if (sessionId) {
           vscode.commands.executeCommand(
-            "continue.focusContinueSessionId",
+            "homi.focusHomiSessionId",
             sessionId,
           );
         }
@@ -498,7 +498,7 @@ const getCommandsMap: (
       panel.onDidDispose(
         () => {
           sidebar.resetWebviewProtocolWebview();
-          vscode.commands.executeCommand("continue.focusContinueInput");
+          vscode.commands.executeCommand("homi.focusHomiInput");
         },
         null,
         extensionContext.subscriptions,
@@ -507,10 +507,10 @@ const getCommandsMap: (
       vscode.commands.executeCommand("workbench.action.copyEditorToNewWindow");
       vscode.commands.executeCommand("workbench.action.closeAuxiliaryBar");
     },
-    "continue.openConfigPage": () => {
-      vscode.commands.executeCommand("continue.navigateTo", "/config", false);
+    "homi.openConfigPage": () => {
+      vscode.commands.executeCommand("homi.navigateTo", "/config", false);
     },
-    "continue.selectFilesAsContext": async (
+    "homi.selectFilesAsContext": async (
       firstUri: vscode.Uri,
       uris: vscode.Uri[],
     ) => {
@@ -527,7 +527,7 @@ const getCommandsMap: (
           ?.then((stat) => stat.type === vscode.FileType.Directory);
         if (isDirectory) {
           for await (const fileUri of walkDirAsync(uri.toString(), ide, {
-            source: "vscode continue.selectFilesAsContext command",
+            source: "vscode homi.selectFilesAsContext command",
           })) {
             await addEntireFileToContext(
               vscode.Uri.parse(fileUri),
@@ -544,13 +544,13 @@ const getCommandsMap: (
         }
       }
     },
-    "continue.logAutocompleteOutcome": (
+    "homi.logAutocompleteOutcome": (
       completionId: string,
       completionProvider: CompletionProvider,
     ) => {
       completionProvider.accept(completionId);
     },
-    "continue.toggleTabAutocompleteEnabled": () => {
+    "homi.toggleTabAutocompleteEnabled": () => {
       captureCommandTelemetry("toggleTabAutocompleteEnabled");
 
       const config = vscode.workspace.getConfiguration(EXTENSION_NAME);
@@ -586,7 +586,7 @@ const getCommandsMap: (
         }
       }
     },
-    "continue.forceAutocomplete": async () => {
+    "homi.forceAutocomplete": async () => {
       captureCommandTelemetry("forceAutocomplete");
 
       // 1. Explicitly hide any existing suggestion. This clears VS Code's cache for the current position.
@@ -598,7 +598,7 @@ const getCommandsMap: (
       );
     },
 
-    "continue.openTabAutocompleteConfigMenu": async () => {
+    "homi.openTabAutocompleteConfigMenu": async () => {
       captureCommandTelemetry("openTabAutocompleteConfigMenu");
 
       const config = vscode.workspace.getConfiguration(EXTENSION_NAME);
@@ -684,25 +684,25 @@ const getCommandsMap: (
             });
           }
         } else if (selectedOption === "$(comment) Open chat") {
-          vscode.commands.executeCommand("continue.focusContinueInput");
+          vscode.commands.executeCommand("homi.focusHomiInput");
         } else if (selectedOption === "$(screen-full) Open full screen chat") {
-          vscode.commands.executeCommand("continue.toggleFullScreen");
+          vscode.commands.executeCommand("homi.toggleFullScreen");
         } else if (selectedOption === "$(gear) Open settings") {
-          vscode.commands.executeCommand("continue.navigateTo", "/config");
+          vscode.commands.executeCommand("homi.navigateTo", "/config");
         }
 
         quickPick.dispose();
       });
       quickPick.show();
     },
-    "continue.navigateTo": (path: string, toggle: boolean) => {
+    "homi.navigateTo": (path: string, toggle: boolean) => {
       sidebar.webviewProtocol?.request("navigateTo", { path, toggle });
       focusGUI();
     },
-    "continue.startLocalOllama": () => {
+    "homi.startLocalOllama": () => {
       startLocalOllama(ide);
     },
-    "continue.installModel": async (
+    "homi.installModel": async (
       modelName: string,
       llmProvider: ILLM | undefined,
     ) => {
@@ -721,7 +721,7 @@ const getCommandsMap: (
         );
       }
     },
-    "continue.convertConfigJsonToConfigYaml": async () => {
+    "homi.convertConfigJsonToConfigYaml": async () => {
       const configJson = fs.readFileSync(getConfigJsonPath(), "utf-8");
       const parsed = JSON.parse(configJson);
       const configYaml = convertJsonToYamlConfig(parsed);
@@ -750,7 +750,7 @@ const getCommandsMap: (
           }
         });
     },
-    "continue.enterEnterpriseLicenseKey": async () => {
+    "homi.enterEnterpriseLicenseKey": async () => {
       captureCommandTelemetry("enterEnterpriseLicenseKey");
 
       const licenseKey = await vscode.window.showInputBox({
@@ -811,7 +811,7 @@ const registerCopyBufferService = (
       });
     }
 
-    await context.workspaceState.update("continue.copyBuffer", {
+    await context.workspaceState.update("homi.copyBuffer", {
       text: clipboardText,
       copiedAt: new Date().toISOString(),
     });
@@ -870,7 +870,7 @@ export function registerAllCommands(
   context: vscode.ExtensionContext,
   ide: VsCodeIde,
   extensionContext: vscode.ExtensionContext,
-  sidebar: ContinueGUIWebviewViewProvider,
+  sidebar: HomiGUIWebviewViewProvider,
   consoleView: ContinueConsoleWebviewViewProvider,
   configHandler: ConfigHandler,
   verticalDiffManager: VerticalDiffManager,

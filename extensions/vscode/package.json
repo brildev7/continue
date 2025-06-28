@@ -152,414 +152,414 @@
     },
     "commands": [
       {
-        "command": "continue.applyCodeFromChat",
-        "category": "Continue",
+        "command": "homi.applyCodeFromChat",
+        "category": "Homi",
         "title": "Apply code from chat",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.acceptDiff",
-        "category": "Continue",
+        "command": "homi.acceptDiff",
+        "category": "Homi",
         "title": "Accept Diff",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.rejectDiff",
-        "category": "Continue",
+        "command": "homi.rejectDiff",
+        "category": "Homi",
         "title": "Reject Diff",
-        "group": "Continue",
+        "group": "Homi",
         "icon": "$(stop)"
       },
       {
-        "command": "continue.acceptVerticalDiffBlock",
-        "category": "Continue",
+        "command": "homi.acceptVerticalDiffBlock",
+        "category": "Homi",
         "title": "Accept Vertical Diff Block",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.rejectVerticalDiffBlock",
-        "category": "Continue",
+        "command": "homi.rejectVerticalDiffBlock",
+        "category": "Homi",
         "title": "Reject Vertical Diff Block",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.focusEdit",
-        "category": "Continue",
+        "command": "homi.focusEdit",
+        "category": "Homi",
         "title": "Edit Highlighted Code",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.focusContinueInput",
-        "category": "Continue",
+        "command": "homi.focusHomiInput",
+        "category": "Homi",
         "title": "Add Highlighted Code to Context and Clear Chat",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.focusContinueInputWithoutClear",
-        "category": "Continue",
+        "command": "homi.focusHomiInputWithoutClear",
+        "category": "Homi",
         "title": "Add Highlighted Code to Context",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.debugTerminal",
-        "category": "Continue",
+        "command": "homi.debugTerminal",
+        "category": "Homi",
         "title": "Debug Terminal",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.exitEditMode",
-        "category": "Continue",
+        "command": "homi.exitEditMode",
+        "category": "Homi",
         "title": "Exit Edit Mode",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.toggleFullScreen",
-        "category": "Continue",
+        "command": "homi.toggleFullScreen",
+        "category": "Homi",
         "title": "Open in new window",
         "icon": "$(link-external)",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.openConfigPage",
-        "category": "Continue",
+        "command": "homi.openConfigPage",
+        "category": "Homi",
         "title": "Open Settings",
         "icon": "$(gear)",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.toggleTabAutocompleteEnabled",
-        "category": "Continue",
+        "command": "homi.toggleTabAutocompleteEnabled",
+        "category": "Homi",
         "title": "Toggle Autocomplete Enabled",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.forceAutocomplete",
-        "title": "Continue: Force Autocomplete",
-        "category": "Continue"
+        "command": "homi.forceAutocomplete",
+        "title": "Homi: Force Autocomplete",
+        "category": "Homi"
       },
       {
-        "command": "continue.selectFilesAsContext",
-        "category": "Continue",
+        "command": "homi.selectFilesAsContext",
+        "category": "Homi",
         "title": "Select Files as Context",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.newSession",
-        "category": "Continue",
+        "command": "homi.newSession",
+        "category": "Homi",
         "title": "New Session",
         "icon": "$(add)",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.viewHistory",
-        "category": "Continue",
+        "command": "homi.viewHistory",
+        "category": "Homi",
         "title": "View History",
         "icon": "$(history)",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.viewLogs",
-        "category": "Continue",
+        "command": "homi.viewLogs",
+        "category": "Homi",
         "title": "View History",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.clearConsole",
-        "category": "Continue",
+        "command": "homi.clearConsole",
+        "category": "Homi",
         "title": "Clear Console",
         "icon": "$(clear-all)",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.navigateTo",
-        "category": "Continue",
+        "command": "homi.navigateTo",
+        "category": "Homi",
         "title": "Navigate to a path",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.writeCommentsForCode",
-        "category": "Continue",
+        "command": "homi.writeCommentsForCode",
+        "category": "Homi",
         "title": "Write Comments for this Code",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.writeDocstringForCode",
-        "category": "Continue",
+        "command": "homi.writeDocstringForCode",
+        "category": "Homi",
         "title": "Write a Docstring for this Code",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.fixCode",
-        "category": "Continue",
+        "command": "homi.fixCode",
+        "category": "Homi",
         "title": "Fix this Code",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.optimizeCode",
-        "category": "Continue",
+        "command": "homi.optimizeCode",
+        "category": "Homi",
         "title": "Optimize this Code",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.fixGrammar",
-        "category": "Continue",
+        "command": "homi.fixGrammar",
+        "category": "Homi",
         "title": "Fix Grammar / Spelling",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.codebaseForceReIndex",
-        "category": "Continue",
+        "command": "homi.codebaseForceReIndex",
+        "category": "Homi",
         "title": "Codebase Force Re-Index",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.rebuildCodebaseIndex",
-        "category": "Continue",
+        "command": "homi.rebuildCodebaseIndex",
+        "category": "Homi",
         "title": "Rebuild codebase index",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.docsIndex",
-        "category": "Continue",
+        "command": "homi.docsIndex",
+        "category": "Homi",
         "title": "Docs Index",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.docsReIndex",
-        "category": "Continue",
+        "command": "homi.docsReIndex",
+        "category": "Homi",
         "title": "Docs Force Re-Index",
-        "group": "Continue"
+        "group": "Homi"
       },
       {
-        "command": "continue.focusContinueInput",
-        "category": "Continue",
-        "title": "Focus Continue Chat",
-        "group": "Continue"
+        "command": "homi.focusHomiInput",
+        "category": "Homi",
+        "title": "Focus Homi Chat",
+        "group": "Homi"
       },
       {
-        "command": "continue.enterEnterpriseLicenseKey",
-        "category": "Continue",
+        "command": "homi.enterEnterpriseLicenseKey",
+        "category": "Homi",
         "title": "Enter Enterprise License Key",
-        "group": "Continue"
+        "group": "Homi"
       }
     ],
     "keybindings": [
       {
-        "command": "continue.focusContinueInput",
+        "command": "homi.focusHomiInput",
         "mac": "cmd+l",
         "key": "ctrl+l"
       },
       {
-        "command": "continue.focusContinueInputWithoutClear",
+        "command": "homi.focusHomiInputWithoutClear",
         "mac": "cmd+shift+l",
         "key": "ctrl+shift+l"
       },
       {
-        "command": "continue.acceptDiff",
+        "command": "homi.acceptDiff",
         "mac": "shift+cmd+enter",
         "key": "shift+ctrl+enter",
-        "when": "continue.diffVisible"
+        "when": "homi.diffVisible"
       },
       {
-        "command": "continue.rejectDiff",
+        "command": "homi.rejectDiff",
         "mac": "shift+cmd+backspace",
         "key": "shift+ctrl+backspace",
-        "when": "continue.diffVisible"
+        "when": "homi.diffVisible"
       },
       {
-        "command": "continue.rejectDiff",
+        "command": "homi.rejectDiff",
         "mac": "cmd+z",
         "key": "ctrl+z",
-        "when": "continue.diffVisible"
+        "when": "homi.diffVisible"
       },
       {
-        "command": "continue.quickEditHistoryUp",
+        "command": "homi.quickEditHistoryUp",
         "mac": "up",
         "key": "up",
-        "when": "false && continue.quickEditHistoryFocused"
+        "when": "false && homi.quickEditHistoryFocused"
       },
       {
-        "command": "continue.quickEditHistoryDown",
+        "command": "homi.quickEditHistoryDown",
         "mac": "down",
         "key": "down",
-        "when": "false && continue.quickEditHistoryFocused"
+        "when": "false && homi.quickEditHistoryFocused"
       },
       {
-        "command": "continue.acceptVerticalDiffBlock",
+        "command": "homi.acceptVerticalDiffBlock",
         "mac": "alt+cmd+y",
         "key": "alt+ctrl+y"
       },
       {
-        "command": "continue.rejectVerticalDiffBlock",
+        "command": "homi.rejectVerticalDiffBlock",
         "mac": "alt+cmd+n",
         "key": "alt+ctrl+n"
       },
       {
-        "command": "continue.focusEdit",
+        "command": "homi.focusEdit",
         "title": "Edit code with natural language",
         "mac": "cmd+i",
         "key": "ctrl+i"
       },
       {
-        "command": "continue.exitEditMode",
+        "command": "homi.exitEditMode",
         "mac": "escape",
         "key": "escape",
-        "when": "continue.inEditMode && editorFocus"
+        "when": "homi.inEditMode && editorFocus"
       },
       {
-        "command": "continue.debugTerminal",
+        "command": "homi.debugTerminal",
         "mac": "cmd+shift+r",
         "key": "ctrl+shift+r"
       },
       {
-        "command": "continue.toggleFullScreen",
+        "command": "homi.toggleFullScreen",
         "mac": "cmd+k cmd+m",
         "key": "ctrl+k ctrl+m",
         "when": "!terminalFocus"
       },
       {
-        "command": "continue.toggleTabAutocompleteEnabled",
+        "command": "homi.toggleTabAutocompleteEnabled",
         "mac": "cmd+k cmd+a",
         "key": "ctrl+k ctrl+a",
         "when": "!terminalFocus"
       },
       {
-        "command": "continue.forceAutocomplete",
+        "command": "homi.forceAutocomplete",
         "key": "ctrl+alt+space",
         "mac": "cmd+alt+space",
         "when": "editorTextFocus && !editorHasSelection && !editorReadOnly && !inSnippetMode"
       },
       {
-        "command": "continue.applyCodeFromChat",
+        "command": "homi.applyCodeFromChat",
         "mac": "alt+a",
         "key": "alt+a"
       }
     ],
     "submenus": [
       {
-        "id": "continue.continueSubMenu",
-        "label": "Continue"
+        "id": "homi.homiSubMenu",
+        "label": "Homi"
       }
     ],
     "menus": {
       "commandPalette": [
         {
-          "command": "continue.focusContinueInput"
+          "command": "homi.focusHomiInput"
         },
         {
-          "command": "continue.focusContinueInputWithoutClear"
+          "command": "homi.focusHomiInputWithoutClear"
         },
         {
-          "command": "continue.debugTerminal"
+          "command": "homi.debugTerminal"
         },
         {
-          "command": "continue.toggleFullScreen"
+          "command": "homi.toggleFullScreen"
         },
         {
-          "command": "continue.newSession"
+          "command": "homi.newSession"
         },
         {
-          "command": "continue.enterEnterpriseLicenseKey"
+          "command": "homi.enterEnterpriseLicenseKey"
         }
       ],
       "editor/context": [
         {
-          "submenu": "continue.continueSubMenu",
-          "group": "0_acontinue"
+          "submenu": "homi.homiSubMenu",
+          "group": "0_homi"
         }
       ],
       "editor/title/run": [
         {
-          "command": "continue.rejectDiff",
-          "group": "Continue",
-          "when": "continue.streamingDiff"
+          "command": "homi.rejectDiff",
+          "group": "Homi",
+          "when": "homi.streamingDiff"
         }
       ],
-      "continue.continueSubMenu": [
+      "homi.homiSubMenu": [
         {
-          "command": "continue.focusContinueInputWithoutClear",
-          "group": "Continue",
+          "command": "homi.focusHomiInputWithoutClear",
+          "group": "Homi",
           "when": "editorHasSelection"
         },
         {
-          "command": "continue.focusEdit",
-          "group": "Continue",
+          "command": "homi.focusEdit",
+          "group": "Homi",
           "when": "editorHasSelection && !editorReadonly"
         },
         {
-          "command": "continue.writeCommentsForCode",
-          "group": "Continue",
+          "command": "homi.writeCommentsForCode",
+          "group": "Homi",
           "when": "editorHasSelection && !editorReadonly"
         },
         {
-          "command": "continue.writeDocstringForCode",
-          "group": "Continue",
+          "command": "homi.writeDocstringForCode",
+          "group": "Homi",
           "when": "editorHasSelection && !editorReadonly"
         },
         {
-          "command": "continue.fixCode",
-          "group": "Continue",
+          "command": "homi.fixCode",
+          "group": "Homi",
           "when": "editorHasSelection && !editorReadonly"
         },
         {
-          "command": "continue.optimizeCode",
-          "group": "Continue",
+          "command": "homi.optimizeCode",
+          "group": "Homi",
           "when": "editorHasSelection && !editorReadonly"
         },
         {
-          "command": "continue.fixGrammar",
-          "group": "Continue",
+          "command": "homi.fixGrammar",
+          "group": "Homi",
           "when": "editorHasSelection && editorLangId == 'markdown' && !editorReadonly"
         }
       ],
       "explorer/context": [
         {
-          "command": "continue.selectFilesAsContext",
+          "command": "homi.selectFilesAsContext",
           "group": "1_debug@1"
         }
       ],
       "view/title": [
         {
-          "command": "continue.newSession",
+          "command": "homi.newSession",
           "group": "navigation@1",
-          "when": "view == continue.continueGUIView || view == continue.continueGUIViewRight"
+          "when": "view == homi.homiGUIView || view == homi.homiGUIViewRight"
         },
         {
-          "command": "continue.viewHistory",
+          "command": "homi.viewHistory",
           "group": "navigation@2",
-          "when": "view == continue.continueGUIView || view == continue.continueGUIViewRight"
+          "when": "view == homi.homiGUIView || view == homi.homiGUIViewRight"
         },
         {
-          "command": "continue.toggleFullScreen",
+          "command": "homi.toggleFullScreen",
           "group": "navigation@3",
-          "when": "view == continue.continueGUIView || view == continue.continueGUIViewRight"
+          "when": "view == homi.homiGUIView || view == homi.homiGUIViewRight"
         },
         {
-          "command": "continue.openConfigPage",
+          "command": "homi.openConfigPage",
           "group": "navigation@4",
-          "when": "view == continue.continueGUIView || view == continue.continueGUIViewRight"
+          "when": "view == homi.homiGUIView || view == homi.homiGUIViewRight"
         },
         {
-          "command": "continue.clearConsole",
+          "command": "homi.clearConsole",
           "group": "navigation@1",
-          "when": "view == continue.continueConsoleView"
+          "when": "view == homi.homiConsoleView"
         }
       ],
       "editor/title": [
         {
-          "command": "continue.newSession",
+          "command": "homi.newSession",
           "group": "navigation@1",
-          "when": "activeWebviewPanelId == continue.continueGUIView || activeWebviewPanelId == continue.continueGUIViewRight"
+          "when": "activeWebviewPanelId == homi.homiGUIView || activeWebviewPanelId == homi.homiGUIViewRight"
         },
         {
-          "command": "continue.viewHistory",
+          "command": "homi.viewHistory",
           "group": "navigation@2",
-          "when": "activeWebviewPanelId == continue.continueGUIView || activeWebviewPanelId == continue.continueGUIViewRight"
+          "when": "activeWebviewPanelId == homi.homiGUIView || activeWebviewPanelId == homi.homiGUIViewRight"
         }
       ],
       "terminal/context": [
         {
-          "command": "continue.debugTerminal",
+          "command": "homi.debugTerminal",
           "group": "navigation@top"
         }
       ]
