@@ -103,6 +103,7 @@ export class VsCodeExtension {
       configHandlerPromise,
       this.windowId,
       this.extensionContext,
+      "homi.homiGUIView",
     );
 
     // Initialize right sidebar 
@@ -110,6 +111,7 @@ export class VsCodeExtension {
       configHandlerPromise,
       this.windowId,
       this.extensionContext,
+      "homi.homiGUIViewRight",
     );
 
     // Create delegating protocol

@@ -11,7 +11,7 @@ import type { FileEdit } from "core";
 export class HomiGUIWebviewViewProvider
   implements vscode.WebviewViewProvider
 {
-  public static readonly viewType = "homi.homiGUIView";
+  public readonly viewType: string;
   public webviewProtocol: VsCodeWebviewProtocol;
 
   public get isReady(): boolean {
@@ -61,7 +61,9 @@ export class HomiGUIWebviewViewProvider
     private readonly configHandlerPromise: Promise<ConfigHandler>,
     private readonly windowId: string,
     private readonly extensionContext: vscode.ExtensionContext,
+    viewType: string = "homi.homiGUIView",
   ) {
+    this.viewType = viewType;
     this.webviewProtocol = new VsCodeWebviewProtocol(
       (async () => {
         const configHandler = await this.configHandlerPromise;
