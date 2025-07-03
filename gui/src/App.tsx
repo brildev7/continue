@@ -12,6 +12,9 @@ import Stats from "./pages/stats";
 import ThemePage from "./styles/ThemePage";
 import { ROUTES } from "./util/navigation";
 
+// i18n 초기화
+import "./i18n";
+
 const router = createMemoryRouter([
   {
     path: ROUTES.HOME,

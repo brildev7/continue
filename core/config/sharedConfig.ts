@@ -1,10 +1,10 @@
 import z from "zod";
 
 import {
-  BrowserSerializedContinueConfig,
-  Config,
-  ContinueConfig,
-  SerializedContinueConfig,
+    BrowserSerializedContinueConfig,
+    Config,
+    ContinueConfig,
+    SerializedContinueConfig,
 } from "..";
 
 export const sharedConfigSchema = z
@@ -24,6 +24,7 @@ export const sharedConfigSchema = z
     showSessionTabs: z.boolean(),
     codeBlockToolbarPosition: z.enum(["top", "bottom"]),
     fontSize: z.number(),
+    language: z.enum(["en", "ko"]),
     codeWrap: z.boolean(),
     displayRawMarkdown: z.boolean(),
     showChatScrollbar: z.boolean(),
@@ -125,6 +126,9 @@ export function modifyAnyConfigWithSharedConfig<
   }
   if (sharedConfig.fontSize !== undefined) {
     configCopy.ui.fontSize = sharedConfig.fontSize;
+  }
+  if (sharedConfig.language !== undefined) {
+    configCopy.ui.language = sharedConfig.language;
   }
   if (sharedConfig.codeWrap !== undefined) {
     configCopy.ui.codeWrap = sharedConfig.codeWrap;

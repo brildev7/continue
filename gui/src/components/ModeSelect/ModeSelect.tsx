@@ -2,6 +2,7 @@ import { CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { MessageModes } from "core";
 import { modelSupportsTools } from "core/llm/autodetect";
 import { useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectSelectedChatModel } from "../../redux/slices/configSlice";
 import { setMode } from "../../redux/slices/sessionSlice";
@@ -21,6 +22,7 @@ export function ModeSelect() {
   const metaKeyLabel = useMemo(() => {
     return getMetaKeyLabel();
   }, []);
+  const { t } = useTranslation();
 
   // Switch to chat mode if agent mode is selected but not supported
   useEffect(() => {
@@ -71,7 +73,7 @@ export function ModeSelect() {
         >
           <ModeIcon mode={mode} />
           <span className="hidden sm:block">
-            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+            {t(`common.${mode}`)}
           </span>
           <ChevronDownIcon
             className="h-2 w-2 flex-shrink-0"
@@ -82,7 +84,7 @@ export function ModeSelect() {
           <ListboxOption value="chat">
             <div className="flex flex-row items-center gap-1.5">
               <ModeIcon mode="chat" />
-              <span className="">Chat</span>
+              <span className="">{t('common.chat')}</span>
               <span
                 className={`text-description-muted text-[${getFontSize() - 3}px] mr-auto`}
               >
@@ -99,12 +101,12 @@ export function ModeSelect() {
           >
             <div className="flex flex-row items-center gap-1.5">
               <ModeIcon mode="agent" />
-              <span className="">Agent</span>
+              <span className="">{t('common.agent')}</span>
             </div>
             {agentModeSupported ? (
               mode === "agent" && <CheckIcon className="ml-auto h-3 w-3" />
             ) : (
-              <span>(Not supported)</span>
+              <span>{t('errors.notSupported')}</span>
             )}
           </ListboxOption>
 

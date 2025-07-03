@@ -1,7 +1,7 @@
 import {
-  DataDestination,
-  ModelRole,
-  PromptTemplates,
+    DataDestination,
+    ModelRole,
+    PromptTemplates,
 } from "@continuedev/config-yaml";
 import Parser from "web-tree-sitter";
 import { CodebaseIndexer } from "./indexing/CodebaseIndexer";
@@ -1252,6 +1252,7 @@ export interface MCPServerStatus extends MCPOptions {
 export interface ContinueUIConfig {
   codeBlockToolbarPosition?: "top" | "bottom";
   fontSize?: number;
+  language?: "en" | "ko";
   displayRawMarkdown?: boolean;
   showChatScrollbar?: boolean;
   codeWrap?: boolean;

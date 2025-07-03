@@ -1,0 +1,89 @@
+{
+  "common": {
+    "settings": "Settings",
+    "chat": "Chat",
+    "agent": "Agent",
+    "enter": "Enter",
+    "continue": "Continue",
+    "cancel": "Cancel",
+    "accept": "Accept",
+    "reject": "Reject",
+    "apply": "Apply",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "copy": "Copy",
+    "paste": "Paste",
+    "cut": "Cut",
+    "select": "Select",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "warning": "Warning",
+    "info": "Info",
+    "success": "Success",
+    "close": "Close",
+    "open": "Open",
+    "help": "Help",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "language": "Language"
+  },
+  "menu": {
+    "newAssistant": "New Assistant",
+    "reloadConfig": "Reload config",
+    "selectModel": "Select Model",
+    "selectMode": "Select Mode",
+    "exitEdit": "Esc to exit Edit"
+  },
+  "settings": {
+    "title": "Settings",
+    "userSettings": "User settings",
+    "fontSize": "Font Size",
+    "language": "Language",
+    "multilineAutocompletions": "Multiline Autocompletions",
+    "autocompleteTimeout": "Autocomplete Timeout (ms)",
+    "autocompleteDebounce": "Autocomplete Debounce (ms)",
+    "disableAutocompleteInFiles": "Disable autocomplete in files",
+    "showSessionTabs": "Show Session Tabs",
+    "wrapCodeblocks": "Wrap Codeblocks",
+    "showChatScrollbar": "Show Chat Scrollbar",
+    "textToSpeechOutput": "Text-to-Speech Output",
+    "enableSessionTitles": "Enable Session Titles",
+    "formatMarkdown": "Format Markdown",
+    "allowAnonymousTelemetry": "Allow Anonymous Telemetry",
+    "enableIndexing": "Enable Indexing",
+    "experimentalSettings": "Experimental Settings",
+    "autoAcceptAgentEdits": "Auto-Accept Agent Edits",
+    "addCurrentFileByDefault": "Add Current File by Default"
+  },
+  "modes": {
+    "auto": "Auto",
+    "always": "Always",
+    "never": "Never"
+  },
+  "toolbar": {
+    "pendingToolCall": "Pending tool call",
+    "diffs": "diff",
+    "diffsPlural": "diffs"
+  },
+  "onboarding": {
+    "createYourOwnAssistant": "Create Your Own Assistant",
+    "discoverAndRemix": "Discover and remix popular assistants, or create your own from scratch",
+    "exploreAssistants": "Explore Assistants",
+    "createFromScratch": "Or, create your own assistant from scratch",
+    "logInToContinueHub": "Log in to Continue Hub",
+    "configureOwnModels": "Or, configure your own models"
+  },
+  "tabs": {
+    "settings": "Settings",
+    "indexing": "Indexing", 
+    "help": "Help",
+    "shortcuts": "Shortcuts"
+  },
+  "errors": {
+    "setupModel": "Setup {{displayName}} model",
+    "notSupported": "(Not supported)"
+  }
+} 

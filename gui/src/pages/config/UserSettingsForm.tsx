@@ -1,14 +1,15 @@
 import {
-  CheckIcon,
-  ChevronRightIcon,
-  ExclamationTriangleIcon,
-  XMarkIcon,
+    CheckIcon,
+    ChevronRightIcon,
+    ExclamationTriangleIcon,
+    XMarkIcon,
 } from "@heroicons/react/24/outline";
 import {
-  SharedConfigSchema,
-  modifyAnyConfigWithSharedConfig,
+    SharedConfigSchema,
+    modifyAnyConfigWithSharedConfig,
 } from "core/config/sharedConfig";
 import { useContext, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Input } from "../../components";
 import NumberInput from "../../components/gui/NumberInput";
 import { Select } from "../../components/gui/Select";
@@ -18,9 +19,11 @@ import { useFontSize } from "../../components/ui/font";
 import { IdeMessengerContext } from "../../context/IdeMessenger";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { updateConfig } from "../../redux/slices/configSlice";
-import { setLocalStorage } from "../../util/localStorage";
+import { getLocalStorage, setLocalStorage } from "../../util/localStorage";
 
 export function UserSettingsForm() {
+  const { t, i18n } = useTranslation();
+
   /////// User settings section //////
   const dispatch = useAppDispatch();
   const ideMessenger = useContext(IdeMessengerContext);
@@ -110,6 +113,17 @@ export function UserSettingsForm() {
       setHubEnabled(continueTestEnvironment === "production");
     });
   }, [ideMessenger]);
+
+  const [currentLanguage, setCurrentLanguage] = useState(
+    getLocalStorage('language') || 'en'
+  );
+
+  const handleLanguageChange = (language: 'en' | 'ko') => {
+    setCurrentLanguage(language);
+    i18n.changeLanguage(language);
+    // 언어 설정도 공유 설정으로 저장
+    handleUpdate({ language });
+  };
 
   return (
     <div className="flex flex-col">
@@ -232,7 +246,7 @@ export function UserSettingsForm() {
                   /> */}
 
             <label className="flex items-center justify-between gap-3">
-              <span className="text-left">Font Size</span>
+              <span className="text-left">{t('settings.fontSize')}</span>
               <NumberInput
                 value={fontSize}
                 onChange={(val) => {
@@ -246,8 +260,18 @@ export function UserSettingsForm() {
               />
             </label>
             <label className="flex items-center justify-between gap-3">
+              <span className="text-left">{t('common.language')}</span>
+              <Select
+                value={currentLanguage}
+                onChange={(e) => handleLanguageChange(e.target.value as 'en' | 'ko')}
+              >
+                <option value="en">English</option>
+                <option value="ko">한국어</option>
+              </Select>
+            </label>
+            <label className="flex items-center justify-between gap-3">
               <span className="lines lines-1 text-left">
-                Multiline Autocompletions
+                {t('settings.multilineAutocompletions')}
               </span>
               <Select
                 value={useAutocompleteMultilineCompletions}

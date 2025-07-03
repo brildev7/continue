@@ -1,7 +1,7 @@
 import {
-  AtSymbolIcon,
-  LightBulbIcon,
-  PhotoIcon,
+    AtSymbolIcon,
+    LightBulbIcon,
+    PhotoIcon,
 } from "@heroicons/react/24/outline";
 import { InputModifiers } from "core";
 import { modelSupportsImages, modelSupportsTools } from "core/llm/autodetect";
@@ -10,8 +10,8 @@ import { IdeMessengerContext } from "../../context/IdeMessenger";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectUseActiveFile } from "../../redux/selectors";
 import {
-  selectCurrentToolCall,
-  selectCurrentToolCallApplyState,
+    selectCurrentToolCall,
+    selectCurrentToolCallApplyState,
 } from "../../redux/selectors/selectCurrentToolCall";
 import { selectSelectedChatModel } from "../../redux/slices/configSlice";
 import { setHasReasoningEnabled } from "../../redux/slices/sessionSlice";

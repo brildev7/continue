@@ -1,0 +1,33 @@
+name: local-assistant
+version: 0.1.0
+schema: v1
+
+models:
+  - name: devstral-local-chat
+    provider: ollama
+    model: devstral:24b
+    apiBase: http://222.231.26.58:15116
+    roles:
+      - chat
+      - edit
+      - apply
+  - name: devstral-local-autocomplete
+    provider: ollama
+    model: devstral:24b
+    apiBase: http://222.231.26.58:15116
+    roles:
+      - autocomplete
+  
+  - name: bge-m3-embedding
+    provider: huggingface-tei
+    model: BAAI/bge-m3
+    apiBase: http://222.231.26.58:15090
+    roles:
+      - embed
+  
+  - name: bge-reranker-v2-m3
+    provider: huggingface-tei
+    model: BAAI/bge-reranker-v2-m3
+    apiBase: http://222.231.26.58:15091
+    roles:
+      - rerank
