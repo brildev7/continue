@@ -128,8 +128,18 @@ void (async () => {
   );
 
   const indexHtmlPath = path.join(intellijExtensionWebviewPath, "index.html");
-  fs.copyFileSync(indexHtmlPath, "tmp_index.html");
-  rimrafSync(intellijExtensionWebviewPath);
+  
+  // Only backup existing index.html if it exists
+  let hasOriginalIndexHtml = false;
+  if (fs.existsSync(indexHtmlPath)) {
+    fs.copyFileSync(indexHtmlPath, "tmp_index.html");
+    hasOriginalIndexHtml = true;
+  }
+  
+  // Remove existing webview directory if it exists
+  if (fs.existsSync(intellijExtensionWebviewPath)) {
+    rimrafSync(intellijExtensionWebviewPath);
+  }
   fs.mkdirSync(intellijExtensionWebviewPath, { recursive: true });
 
   await new Promise((resolve, reject) => {
@@ -145,12 +155,14 @@ void (async () => {
     });
   });
 
-  // Put back index.html
-  if (fs.existsSync(indexHtmlPath)) {
-    rimrafSync(indexHtmlPath);
+  // Put back index.html only if we had an original one
+  if (hasOriginalIndexHtml) {
+    if (fs.existsSync(indexHtmlPath)) {
+      rimrafSync(indexHtmlPath);
+    }
+    fs.copyFileSync("tmp_index.html", indexHtmlPath);
+    fs.unlinkSync("tmp_index.html");
   }
-  fs.copyFileSync("tmp_index.html", indexHtmlPath);
-  fs.unlinkSync("tmp_index.html");
 
   console.log("[info] Copied gui build to JetBrains extension");
 
