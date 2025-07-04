@@ -470,6 +470,60 @@ function writeBuildTimestamp() {
   );
 }
 
+async function copyConfigSchema() {
+  process.chdir(path.join(continueDir, "extensions", "vscode"));
+  // Modify and copy for .continuerc.json
+  const schema = JSON.parse(fs.readFileSync("config_schema.json", "utf8"));
+  schema.$defs.SerializedContinueConfig.properties.mergeBehavior = {
+    type: "string",
+    enum: ["merge", "overwrite"],
+    default: "merge",
+    title: "Merge behavior",
+    markdownDescription:
+      "If set to 'merge', .continuerc.json will be applied on top of config.json (arrays and objects are merged). If set to 'overwrite', then every top-level property of .continuerc.json will overwrite that property from config.json.",
+    "x-intellij-html-description":
+      "<p>If set to <code>merge</code>, <code>.continuerc.json</code> will be applied on top of <code>config.json</code> (arrays and objects are merged). If set to <code>overwrite</code>, then every top-level property of <code>.continuerc.json</code> will overwrite that property from <code>config.json</code>.</p>",
+  };
+  fs.writeFileSync("continue_rc_schema.json", JSON.stringify(schema, null, 2));
+
+  // Copy config schemas to intellij
+  fs.copyFileSync(
+    "config_schema.json",
+    path.join(
+      "..",
+      "intellij",
+      "src",
+      "main",
+      "resources",
+      "config_schema.json",
+    ),
+  );
+  fs.copyFileSync(
+    "continue_rc_schema.json",
+    path.join(
+      "..",
+      "intellij",
+      "src",
+      "main",
+      "resources",
+      "continue_rc_schema.json",
+    ),
+  );
+  console.log("[info] Copied config schemas to intellij");
+}
+
+async function installNodeModules() {
+  // Install node modules in VSCode extension
+  process.chdir(path.join(continueDir, "extensions", "vscode"));
+  execCmdSync("npm install");
+  console.log("[info] npm install in extensions/vscode completed");
+
+  // Install node modules in GUI
+  process.chdir(path.join(continueDir, "gui"));
+  execCmdSync("npm install");
+  console.log("[info] npm install in gui completed");
+}
+
 module.exports = {
   continueDir,
   buildGui,
@@ -485,4 +539,6 @@ module.exports = {
   copyTokenizers,
   copyScripts,
   writeBuildTimestamp,
+  copyConfigSchema,
+  installNodeModules,
 };
