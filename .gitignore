@@ -170,3 +170,5 @@ extensions/.continue-debug/
 .continuerules
 **/.continue/assistants/
 keys
+
+package-lock.json
