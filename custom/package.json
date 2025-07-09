@@ -1,0 +1,37 @@
+{
+  "name": "@continue/custom",
+  "version": "1.0.0",
+  "description": "Custom implementations for Continue AI assistant",
+  "main": "index.ts",
+  "scripts": {
+    "test": "node examples/usage-examples.js",
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "continue",
+    "ai",
+    "assistant",
+    "custom",
+    "extensions",
+    "context-providers",
+    "tools",
+    "utilities"
+  ],
+  "author": "Continue Development Team",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  },
+  "files": [
+    "index.ts",
+    "context-providers/",
+    "tools/",
+    "utils/",
+    "examples/",
+    "tsconfig.json",
+    "README.md"
+  ]
+} 
