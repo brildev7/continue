@@ -1,7 +1,7 @@
 import {
-  DataDestination,
-  ModelRole,
-  PromptTemplates,
+    DataDestination,
+    ModelRole,
+    PromptTemplates,
 } from "@continuedev/config-yaml";
 import Parser from "web-tree-sitter";
 import { CodebaseIndexer } from "./indexing/CodebaseIndexer";
@@ -929,6 +929,9 @@ export type ContextProviderName =
   | "web"
   | "discord"
   | "clipboard"
+  | "random"
+  | "simple-info"
+  | "time"
   | string;
 
 export type TemplateType =

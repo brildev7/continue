@@ -1,0 +1,35 @@
+{
+  "models": [
+    {
+      "title": "GPT-4",
+      "provider": "openai",
+      "model": "gpt-4",
+      "apiKey": "your-api-key-here"
+    }
+  ],
+  "contextProviders": [
+    {
+      "name": "random",
+      "params": {}
+    },
+    {
+      "name": "simple-info",
+      "params": {}
+    },
+    {
+      "name": "time",
+      "params": {}
+    },
+    {
+      "name": "codebase",
+      "params": {}
+    },
+    {
+      "name": "diff",
+      "params": {}
+    }
+  ],
+  "experimental": {
+    "useTools": true
+  }
+} 

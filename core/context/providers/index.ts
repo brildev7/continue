@@ -33,6 +33,11 @@ import TerminalContextProvider from "./TerminalContextProvider";
 import URLContextProvider from "./URLContextProvider";
 import WebContextProvider from "./WebContextProvider";
 
+// Custom context providers
+import RandomProvider from "../../../custom/context-providers/RandomProvider";
+import SimpleInfoProvider from "../../../custom/context-providers/SimpleInfoProvider";
+import TimeContextProvider from "../../../custom/context-providers/TimeContextProvider";
+
 /**
  * Note: We are currently omitting the following providers due to bugs:
  * - `CodeOutlineContextProvider`
@@ -71,6 +76,10 @@ export const Providers: (typeof BaseContextProvider)[] = [
   GitCommitContextProvider,
   ClipboardContextProvider,
   RulesContextProvider,
+  // Custom providers
+  RandomProvider,
+  SimpleInfoProvider,
+  TimeContextProvider,
 ];
 
 export function contextProviderClassFromName(

@@ -4,12 +4,25 @@ This directory contains custom implementations and extensions for the Continue A
 
 ## 🚀 Quick Start
 
-```typescript
-// Import the entire custom registry
-import { CustomRegistry } from './custom';
+The custom providers and tools are now **fully integrated** into Continue. You can use them directly in your configuration:
 
-// Or import specific modules
-import { StringUtils, SimpleCalculatorTool, RandomProvider } from './custom';
+```json
+{
+  "contextProviders": [
+    {
+      "name": "random",
+      "params": {}
+    },
+    {
+      "name": "simple-info",
+      "params": {}
+    },
+    {
+      "name": "time",
+      "params": {}
+    }
+  ]
+}
 ```
 
 ## 📁 Directory Structure
@@ -21,7 +34,9 @@ custom/
 ├── tsconfig.json            # TypeScript configuration
 ├── index.ts                 # Main export file
 ├── context-providers/       # Custom context providers
-│   └── RandomProvider.ts    # Random information provider
+│   ├── RandomProvider.ts    # Random information provider
+│   ├── SimpleInfoProvider.ts # System information provider
+│   └── TimeContextProvider.ts # Time information provider
 ├── tools/                   # Custom tools
 │   └── SimpleCalculator.ts  # Basic calculator tool
 ├── utils/                   # Utility functions
@@ -34,15 +49,18 @@ custom/
 
 ### Context Providers
 
-#### RandomProvider
+#### RandomProvider (`@random`)
 Provides random information including numbers, quotes, and facts.
 
-```typescript
-import { RandomProvider } from './custom';
-
-// Usage in Continue configuration
-const randomProvider = new RandomProvider({});
-const items = await randomProvider.getContextItems("", extras);
+```json
+{
+  "contextProviders": [
+    {
+      "name": "random",
+      "params": {}
+    }
+  ]
+}
 ```
 
 **Features:**
@@ -51,29 +69,63 @@ const items = await randomProvider.getContextItems("", extras);
 - Fun facts
 - Generated timestamps
 
-### Tools
+#### SimpleInfoProvider (`@simple-info`)
+Provides basic system and environment information.
 
-#### SimpleCalculatorTool
-A basic calculator for arithmetic operations.
-
-```typescript
-import { executeSimpleCalculator } from './custom';
-
-// Direct usage
-const result = executeSimpleCalculator("add", 10, 5);     // "10 + 5 = 15"
-const result = executeSimpleCalculator("divide", 10, 2);  // "10 ÷ 2 = 5"
+```json
+{
+  "contextProviders": [
+    {
+      "name": "simple-info",
+      "params": {}
+    }
+  ]
+}
 ```
 
-**Supported Operations:**
-- Addition (`add`)
-- Subtraction (`subtract`)
-- Multiplication (`multiply`)
-- Division (`divide`) with zero-division protection
+**Features:**
+- Platform information
+- Node.js version
+- Memory usage
+- Working directory
+
+#### TimeContextProvider (`@time`)
+Provides current time and timezone information.
+
+```json
+{
+  "contextProviders": [
+    {
+      "name": "time",
+      "params": {}
+    }
+  ]
+}
+```
+
+**Features:**
+- Local time
+- UTC time
+- ISO 8601 format
+- Unix timestamp
+- Timezone information
+
+### Tools
+
+#### SimpleCalculator Tool
+A basic calculator for arithmetic operations, now available as a built-in tool.
+
+The calculator tool is automatically available in Continue and can be used by the AI assistant for performing basic arithmetic operations:
+
+- Addition
+- Subtraction  
+- Multiplication
+- Division (with zero-division protection)
 
 ### Utilities
 
 #### StringUtils
-Comprehensive string manipulation utilities.
+Comprehensive string manipulation utilities available for other custom components.
 
 ```typescript
 import { StringUtils } from './custom';
@@ -92,162 +144,129 @@ StringUtils.generateRandomString(8);          // "aB3xY7mQ"
 // Validation
 StringUtils.isPalindrome("racecar");          // true
 StringUtils.getInitials("John Doe");          // "JD"
-
-// Email/URL validation
-StringUtils.StringValidation.isEmail("test@example.com");  // true
-StringUtils.StringValidation.isURL("https://example.com"); // true
 ```
 
-### Examples
+## 🛠️ Integration Status
 
-#### Practical Usage Examples
+✅ **Context Providers**: Fully integrated and available via `@random`, `@simple-info`, `@time`
+✅ **Tools**: SimpleCalculator available as built-in tool
+✅ **Build System**: Included in TypeScript compilation
+✅ **Type Safety**: Full TypeScript support with proper interfaces
 
-```typescript
-import { formatUserProfile, analyzeText } from './custom';
+## 📋 Usage Examples
 
-// User profile formatting
-const profile = formatUserProfile("john", "doe", "john.doe@example.com");
-console.log(profile);
-// Output:
-// User Profile:
-// - Name: John Doe
-// - Initials: JD
-// - Email: john.doe@example.com ✓
-// - Profile ID: aB3xY7
+### Using Context Providers in Chat
 
-// Text analysis
-const analysis = analyzeText("This is a sample text");
-console.log(analysis);
-// Output:
-// Text Analysis:
-// - Word count: 5
-// - Character count: 21
-// - Preview: This is a sample text
-// - Is palindrome: false
+```
+@random Give me some random information
+@simple-info What's my system information?
+@time What's the current time?
 ```
 
-## 🛠️ Development
+### Using Tools
+The calculator tool is automatically available to the AI assistant. Simply ask for calculations:
 
-### Building
-
-```bash
-cd custom/
-npm install
-npm run build
+```
+Calculate 25 * 4 + 10
+What's 100 divided by 3?
 ```
 
-### Testing
+## 🔌 Configuration
 
-```bash
-npm test
-```
+### Complete Configuration Example
 
-### Development Mode
-
-```bash
-npm run dev  # Watch mode
-```
-
-## 📋 API Reference
-
-### CustomRegistry
-
-The main registry object that provides access to all custom functionality:
-
-```typescript
-export const CustomRegistry = {
-  contextProviders: {
-    random: RandomProvider,
-  },
-  tools: {
-    calculator: SimpleCalculatorTool,
-  },
-  utilities: {
-    string: StringUtils,
-  },
-  examples: {
-    formatUserProfile,
-    analyzeText,
-  }
-};
-```
-
-### Version Information
-
-```typescript
-import { CUSTOM_VERSION } from './custom';
-console.log(CUSTOM_VERSION); // "1.0.0"
-```
-
-## 🔌 Integration with Continue
-
-To use these custom implementations in your Continue configuration:
-
-1. **Context Providers**: Add to your `config.json`:
 ```json
 {
+  "models": [
+    {
+      "title": "GPT-4",
+      "provider": "openai",
+      "model": "gpt-4",
+      "apiKey": "your-api-key"
+    }
+  ],
   "contextProviders": [
     {
       "name": "random",
+      "params": {}
+    },
+    {
+      "name": "simple-info", 
+      "params": {}
+    },
+    {
+      "name": "time",
+      "params": {}
+    },
+    {
+      "name": "codebase",
       "params": {}
     }
   ]
 }
 ```
 
-2. **Tools**: The tools are defined using the Continue Tool interface and can be integrated into the tool system.
+## 🚧 Development
 
-3. **Utilities**: Import and use directly in your custom logic.
+### Building
+
+The custom folder is now integrated into the main build system:
+
+```bash
+# Watch mode (includes custom folder)
+npm run tsc:watch
+
+# Individual custom folder watch
+npm run tsc:watch:custom
+```
+
+### Testing
+
+```bash
+cd custom/
+node test.js
+```
 
 ## 🎯 Use Cases
 
 ### Development Workflows
-- **String Processing**: Format code identifiers, validate inputs
+- **Random Data**: Generate test data, placeholders, examples with `@random`
+- **System Info**: Check environment details with `@simple-info`
+- **Time Context**: Get current time information with `@time`
 - **Quick Calculations**: Perform arithmetic during development
-- **Random Data**: Generate test data, placeholders, examples
-- **Text Analysis**: Analyze code comments, documentation
 
 ### AI Assistant Enhancement
 - **Context Enrichment**: Provide additional context with random facts
 - **Tool Integration**: Extend Continue's capabilities with custom tools
-- **Utility Functions**: Streamline common text processing tasks
+- **System Awareness**: Give AI access to system information
 
-## 🚧 Extending the Custom Module
+## 📝 Architecture
 
-### Adding New Context Providers
+The custom functionality is integrated into Continue's core architecture:
 
-1. Create a new file in `context-providers/`
-2. Extend `BaseContextProvider`
-3. Implement required methods
-4. Export from `index.ts`
-
-### Adding New Tools
-
-1. Create a new file in `tools/`
-2. Define the tool using the `Tool` interface
-3. Implement execution logic
-4. Export from `index.ts`
-
-### Adding New Utilities
-
-1. Create a new file in `utils/`
-2. Implement utility functions
-3. Export from `index.ts`
-
-## 📝 License
-
-MIT License - Feel free to modify and extend as needed.
+```
+Continue Core
+├── Context Providers
+│   ├── Built-in (diff, tree, etc.)
+│   └── Custom (random, simple-info, time)
+├── Tools
+│   ├── Built-in (read_file, etc.)
+│   └── Custom (simple_calculator)
+└── Build System
+    └── TypeScript compilation
+```
 
 ## 🤝 Contributing
 
-This custom module is designed to be easily extensible. When adding new features:
+When adding new features to the custom module:
 
-1. Follow the existing code structure
-2. Add comprehensive documentation
-3. Include usage examples
-4. Update this README
-5. Ensure TypeScript compatibility
+1. Create providers in `context-providers/` extending `BaseContextProvider`
+2. Create tools in `tools/` following the `Tool` interface
+3. Update registration in `core/context/providers/index.ts` for context providers
+4. Update registration in `core/tools/` for tools
+5. Add to build system if needed
+6. Update this README with usage examples
 
-## 📞 Support
+## 📜 License
 
-For questions about the custom implementations, refer to the examples in `examples/usage-examples.ts` or check the inline documentation in each module. 
+MIT License - Feel free to modify and extend as needed. 

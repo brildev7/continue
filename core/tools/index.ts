@@ -13,6 +13,7 @@ import { requestRuleTool } from "./definitions/requestRule";
 import { runTerminalCommandTool } from "./definitions/runTerminalCommand";
 import { searchAndReplaceInFileTool } from "./definitions/searchAndReplaceInFile";
 import { searchWebTool } from "./definitions/searchWeb";
+import { simpleCalculatorTool } from "./definitions/simpleCalculator";
 import { viewDiffTool } from "./definitions/viewDiff";
 import { viewRepoMapTool } from "./definitions/viewRepoMap";
 import { viewSubdirectoryTool } from "./definitions/viewSubdirectory";
@@ -33,6 +34,7 @@ const getBaseToolDefinitions = () => [
   lsTool,
   createRuleBlock,
   fetchUrlContentTool,
+  simpleCalculatorTool,
 ];
 
 export const getConfigDependentToolDefinitions = (
